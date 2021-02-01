@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "../../styles/Home.module.css";
-export default function ArticleCard({ key, image, title, text, date }) {
+export default function ArticleCard({ image, title, text, date }) {
   return (
-    <div className={styles.card} key={key}>
+    <div className={styles.card}>
       {/* 
         I'm using the same image for all articles since the image src is unknown.
         But I did store the DB input as the alt text just to show that the data is there.

@@ -51,13 +51,10 @@ export default function AddMore() {
       image_url: values.url,
       date: `${mo} ${da}, ${ye}`,
     };
-    const res = await fetch(
-      `${process.env.ARTICLE_CONNECTION_HOST}/api/articles`,
-      {
-        method: "post",
-        body: JSON.stringify(data),
-      }
-    );
+    const res = await fetch(`http://localhost:3000/api/articles`, {
+      method: "post",
+      body: JSON.stringify(data),
+    });
 
     setValues({ url: "", text: "", title: "" });
     Router.push("/");
