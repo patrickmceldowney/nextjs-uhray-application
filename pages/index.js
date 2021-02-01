@@ -5,7 +5,6 @@ import fetch from "isomorphic-unfetch";
 import ArticleCard from "../components/ArticleCard";
 import Navbar from "../components/Navbar";
 import AddMore from "../components/AddMore";
-import { Divider } from "@material-ui/core";
 
 let defaultImage = "/images/default.png";
 
@@ -40,7 +39,9 @@ export default function Home({ articles }) {
 }
 
 export async function getStaticProps(context) {
-  const res = await fetch("http://localhost:3000/api/articles");
+  const res = await fetch(
+    `${process.env.ARTICLE_CONNECTION_HOST}/api/articles`
+  );
   const json = await res.json();
 
   return {
