@@ -5,6 +5,7 @@ import fetch from "isomorphic-unfetch";
 import ArticleCard from "../components/ArticleCard";
 import Navbar from "../components/Navbar";
 import AddMore from "../components/AddMore";
+import { Divider } from "@material-ui/core";
 
 let defaultImage = "/images/default.png";
 
@@ -19,14 +20,19 @@ export default function Home({ articles }) {
       <Navbar />
 
       <div className={styles.card_container}>
-        {articles.map((article) => (
-          <ArticleCard
-            key={article._id}
-            image={article.image_url ? article.image_url : defaultImage}
-            title={article.title}
-            text={article.text}
-          />
-        ))}
+        {articles.length > 0 ? (
+          articles.map((article) => (
+            <ArticleCard
+              key={article._id}
+              image={article.image_url ? article.image_url : defaultImage}
+              title={article.title}
+              text={article.text}
+              date={article.date}
+            />
+          ))
+        ) : (
+          <h3>No articles to show, click the button to add one!</h3>
+        )}
         <AddMore />
       </div>
     </div>
@@ -41,5 +47,6 @@ export async function getStaticProps(context) {
     props: {
       articles: json,
     },
+    revalidate: 1,
   };
 }

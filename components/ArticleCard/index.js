@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "../../styles/Home.module.css";
-export default function ArticleCard({ id, image, title, text }) {
+export default function ArticleCard({ id, image, title, text, date }) {
   return (
     <div className={styles.card}>
       {/* 
@@ -20,8 +20,9 @@ export default function ArticleCard({ id, image, title, text }) {
         height={100}
         width={150}
       />
-      <h5 className={styles.card_title}>{title}</h5>
+      <h3 className={styles.card_title}>{title}</h3>
       <p className={styles.card_text}>{text}</p>
+      <p className={styles.card_date}>{date}</p>
     </div>
   );
 }

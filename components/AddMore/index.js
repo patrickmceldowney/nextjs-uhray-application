@@ -10,19 +10,22 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme, createStyles } from "@material-ui/core/styles";
+import Router from "next/router";
 
-const useStyles = makeStyles((theme) => ({
-  margin: {
-    margin: theme.spacing(1),
-    position: "fixed",
-    bottom: theme.spacing(2),
-    left: theme.spacing(2),
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
-}));
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    addMore: {
+      margin: theme.spacing(1),
+      position: "fixed",
+      bottom: theme.spacing(2),
+      left: theme.spacing(2),
+    },
+    extendedIcon: {
+      marginRight: theme.spacing(1),
+    },
+  })
+);
 export default function AddMore() {
   const classes = useStyles();
   const theme = useTheme();
@@ -37,27 +40,40 @@ export default function AddMore() {
 
   const handleFormSubmit = async () => {
     setOpenForm(false);
-    console.log(values);
+
+    let d = new Date();
+    let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
+    let mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
+    let da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
     let data = {
       title: values.title,
       text: values.text,
       image_url: values.url,
+      date: `${mo} ${da}, ${ye}`,
     };
     const res = await fetch("http://localhost:3000/api/articles", {
       method: "post",
       body: JSON.stringify(data),
     });
+
+    setValues({ url: "", text: "", title: "" });
+    Router.push("/");
   };
 
   const handleFormOpen = () => {
-    setOpenForm(!openForm);
+    setOpenForm(true);
+  };
+
+  const handleFormClose = () => {
+    setOpenForm(false);
+    setValues({ url: "", text: "", title: "" });
   };
 
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <div>
-      <div className={classes.margin}>
+    <div className={classes.addMore}>
+      <div>
         <Fab
           size="medium"
           color="secondary"
@@ -67,70 +83,62 @@ export default function AddMore() {
           <AddIcon />
         </Fab>
       </div>
-      <Dialog
-        open={openForm}
-        fullScreen={fullScreen}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleFormOpen();
-        }}
-      >
-        <form autoComplete="off">
-          <DialogTitle>Add new article</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              type="url"
-              name="url"
-              label="Image URL"
-              type="text"
-              fullWidth
-              value={values.url}
-              onChange={handleInputChange}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              name="title"
-              label="Article Title"
-              type="text"
-              fullWidth
-              value={values.title}
-              onChange={handleInputChange}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              name="text"
-              label="Article text"
-              type="text"
-              fullWidth
-              multiline
-              rows={6}
-              value={values.text}
-              onChange={handleInputChange}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              variant="contained"
-              color="secondary"
-              autoFocus
-              onClick={handleFormOpen}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleFormSubmit}
-              autoFocus
-            >
-              Submit
-            </Button>
-          </DialogActions>
-        </form>
+      <Dialog open={openForm} fullScreen={fullScreen}>
+        <DialogTitle>Add new article</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            type="url"
+            name="url"
+            label="Image URL"
+            type="text"
+            fullWidth
+            value={values.url}
+            onChange={handleInputChange}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            name="title"
+            label="Article Title"
+            type="text"
+            fullWidth
+            value={values.title}
+            onChange={handleInputChange}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            name="text"
+            label="Article text"
+            type="text"
+            fullWidth
+            multiline
+            rows={6}
+            value={values.text}
+            onChange={handleInputChange}
+            variant="filled"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            color="secondary"
+            autoFocus
+            onClick={handleFormClose}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleFormSubmit}
+            autoFocus
+          >
+            Submit
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );

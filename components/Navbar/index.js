@@ -1,64 +1,61 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import styles from "../../styles/Home.module.css";
 import {
-  CssBaseline,
   AppBar,
   Toolbar,
   Grid,
-  Hidden,
+  Typography,
   IconButton,
   Tooltip,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
+  SwipeableDrawer,
+  Box,
 } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme, createStyles } from "@material-ui/core/styles";
 import NoficitationsIcon from "@material-ui/icons/Notifications";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { UnfoldLessRounded } from "@material-ui/icons";
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: "auto",
-  },
-  drawer: {
-    [theme.breakpoints.up("sm")]: {
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    root: {
+      display: "flex",
+    },
+    menu: {
+      width: "100%",
+    },
+    menuItem: {
       width: drawerWidth,
-      flexShrink: 0,
+      listStyle: "none",
+      fontWeight: "bold",
     },
-  },
-  appBar: {
-    [theme.breakpoints.up("sm")]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
+    drawer: {
+      [theme.breakpoints.up("sm")]: {
+        width: drawerWidth,
+        flexShrink: 0,
+      },
+      backgroundColor: "#3f51b5",
     },
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
-      display: "none",
+    appBar: {
+      [theme.breakpoints.up("sm")]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+      },
     },
-  },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-}));
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+    drawerPaper: {
+      width: drawerWidth,
+    },
+    listWrapper: {
+      height: "80%",
+    },
+  })
+);
 
 export default function Navbar() {
   const classes = useStyles();
@@ -69,46 +66,8 @@ export default function Navbar() {
     setOpen(!open);
   };
 
-  const drawer = (
-    <div>
-      <div>
-        <IconButton onClick={onDrawerToggle}>
-          <ChevronLeft />
-        </IconButton>
-      </div>
-      <div>
-        <List>
-          <ListItem>
-            <ListItemText>Page 2</ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>Page 2</ListItemText>
-            <List>
-              <ListItem>
-                <ListItemText>Subpage 1</ListItemText>
-              </ListItem>
-              <ListItem>
-                <ListItemText>Subpage 2</ListItemText>
-              </ListItem>
-            </List>
-          </ListItem>
-          <ListItem>
-            <ListItemText>Page 3</ListItemText>
-          </ListItem>
-        </List>
-      </div>
-    </div>
-  );
-
   return (
     <nav>
-      {/* <Hidden smUp implementation="js">
-        <NavMenu
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-        />
-      </Hidden> */}
       <AppBar color="primary" position="sticky" elevation={0}>
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
@@ -135,14 +94,71 @@ export default function Navbar() {
           </Grid>
         </Toolbar>
       </AppBar>
-      <Drawer
+      <SwipeableDrawer
         variant="temporary"
         open={open}
         className={styles.drawer}
         color="primary"
+        onClose={onDrawerToggle}
+        onOpen={onDrawerToggle}
       >
-        {drawer}
-      </Drawer>
+        <div>
+          <IconButton onClick={onDrawerToggle}>
+            <ChevronLeft />
+          </IconButton>
+        </div>
+        <div className={classes.listWrapper}>
+          <ul className={classes.menu}>
+            <li className={classes.menuItem}>
+              <Typography variant="subtitle1">
+                <Box fontWeight="fontWeightBold" m={1}>
+                  Page 1
+                </Box>
+              </Typography>
+              <ul>
+                <li className={classes.menuItem}>
+                  <Typography variant="subtitle1">Subpage 1</Typography>
+                </li>
+                <li className={classes.menuItem}>
+                  <Typography variant="subtitle1">Subpage 2</Typography>
+                </li>
+              </ul>
+            </li>
+            <li className={classes.menuItem}>
+              <Typography variant="subtitle1">
+                <Box fontWeight="fontWeightBold" m={1}>
+                  Page 2
+                </Box>
+              </Typography>
+            </li>
+            <li className={classes.menuItem}>
+              <Typography variant="subtitle1">
+                <Box fontWeight="fontWeightBold" m={1}>
+                  Page 3
+                </Box>
+              </Typography>
+            </li>
+          </ul>
+        </div>
+        <ul className={classes.menu}>
+          <li className={classes.menuItem}>
+            <Grid
+              container
+              alignItems="center"
+              spacing={1}
+              justify="flex-start"
+              className
+            >
+              <Grid item>
+                <Typography variant="subtitle1">Sign out</Typography>
+              </Grid>
+              <Grid item>
+                <ExitToAppIcon />
+              </Grid>
+            </Grid>
+          </li>
+        </ul>
+      </SwipeableDrawer>
     </nav>
   );
 }
