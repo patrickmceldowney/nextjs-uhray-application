@@ -13,9 +13,16 @@ handler.use(middleware);
  * Connect to Atlas cluster from articles database and uhray_articles collection
  */
 handler.get(async (req, res) => {
-  let doc = await req.db.collection("uhray_articles").findOne();
-  console.log(doc);
+  let doc = await req.db.collection("uhray_articles").find({}).toArray();
   res.json(doc);
+  db.close();
+});
+
+handler.post(async (req, res) => {
+  let data = req.body;
+  data = JSON.parse(data);
+  let doc = await req.db.collection("uhray_articles").insertOne(data);
+  res.json({ message: "ok" });
 });
 
 export default handler;
