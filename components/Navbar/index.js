@@ -28,16 +28,16 @@ const useStyles = makeStyles((theme) =>
       width: "100%",
     },
     menuItem: {
-      width: drawerWidth,
       listStyle: "none",
       fontWeight: "bold",
+      color: "#fff",
     },
     drawer: {
       [theme.breakpoints.up("sm")]: {
         width: drawerWidth,
         flexShrink: 0,
       },
-      backgroundColor: "#3f51b5",
+      background: "#3f51b5",
     },
     appBar: {
       [theme.breakpoints.up("sm")]: {
@@ -47,12 +47,13 @@ const useStyles = makeStyles((theme) =>
     },
     menuButton: {
       marginRight: theme.spacing(2),
-    },
-    drawerPaper: {
-      width: drawerWidth,
+      color: "#fff",
     },
     listWrapper: {
       height: "80%",
+    },
+    closeIcon: {
+      color: "#fff",
     },
   })
 );
@@ -97,14 +98,14 @@ export default function Navbar() {
       <SwipeableDrawer
         variant="temporary"
         open={open}
-        className={styles.drawer}
+        classes={{ paper: classes.drawer }}
         color="primary"
         onClose={onDrawerToggle}
         onOpen={onDrawerToggle}
       >
         <div>
           <IconButton onClick={onDrawerToggle}>
-            <ChevronLeft />
+            <ChevronLeft className={classes.closeIcon} />
           </IconButton>
         </div>
         <div className={classes.listWrapper}>
