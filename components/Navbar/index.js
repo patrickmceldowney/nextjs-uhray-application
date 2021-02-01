@@ -34,9 +34,9 @@ const useStyles = makeStyles((theme) =>
     },
     drawer: {
       [theme.breakpoints.up("sm")]: {
-        width: drawerWidth,
         flexShrink: 0,
       },
+      width: drawerWidth,
       background: "#3f51b5",
     },
     appBar: {
@@ -148,7 +148,6 @@ export default function Navbar() {
               alignItems="center"
               spacing={1}
               justify="flex-start"
-              className
             >
               <Grid item>
                 <Typography variant="subtitle1">Sign out</Typography>

@@ -20,7 +20,7 @@ export default function ArticleCard({ id, image, title, text, date }) {
         height={100}
         width={150}
       />
-      <h3 className={styles.card_title}>{title}</h3>
+      <h2 className={styles.card_title}>{title}</h2>
       <p className={styles.card_text}>{text}</p>
       <p className={styles.card_date}>{date}</p>
     </div>
